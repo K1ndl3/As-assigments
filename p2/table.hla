@@ -1,0 +1,107 @@
+program zTable;
+#include( "stdlib.hhf" )
+
+static
+    kStartingValue: int8;
+    static
+    kPlus1:  int8 := 0;
+    kPlus2:  int8 := 0;
+    kPlus3:  int8 := 0;
+    kPlus4:  int8 := 0;
+    kPlus5:  int8 := 0;
+    kPlus6:  int8 := 0;
+    kPlus7:  int8 := 0;
+    kPlus8:  int8 := 0;
+    kPlus9:  int8 := 0;
+    kPlus10: int8 := 0;
+    kPlus11: int8 := 0;
+    kPlus12: int8 := 0;
+    kPlus13: int8 := 0;
+
+
+
+
+begin zTable;
+
+    stdout.put( "Gimme a starting value: " );
+    stdin.get( kStartingValue );
+
+
+    // now set the garbage numbers
+
+    // kPlus1 = kStartingValue + 1
+    mov( kStartingValue, al );
+    add( 1, al );
+    mov( al, kPlus1 );
+
+    // kPlus2 = kStartingValue + 2
+    mov( kStartingValue, al );
+    add( 2, al );
+    mov( al, kPlus2 );
+
+    // kPlus3 = kStartingValue + 3
+    mov( kStartingValue, al );
+    add( 3, al );
+    mov( al, kPlus3 );
+
+    // kPlus4 = kStartingValue + 4
+    mov( kStartingValue, al );
+    add( 4, al );
+    mov( al, kPlus4 );
+
+    // kPlus5 = kStartingValue + 5
+    mov( kStartingValue, al );
+    add( 5, al );
+    mov( al, kPlus5 );
+
+    // kPlus6 = kStartingValue + 6
+    mov( kStartingValue, al );
+    add( 6, al );
+    mov( al, kPlus6 );
+
+    // kPlus7 = kStartingValue + 7
+    mov( kStartingValue, al );
+    add( 7, al );
+    mov( al, kPlus7 );
+
+    // kPlus8 = kStartingValue + 8
+    mov( kStartingValue, al );
+    add( 8, al );
+    mov( al, kPlus8 );
+
+    // kPlus9 = kStartingValue + 9
+    mov( kStartingValue, al );
+    add( 9, al );
+    mov( al, kPlus9 );
+
+    // kPlus10 = kStartingValue + 10
+    mov( kStartingValue, al );
+    add( 10, al );
+    mov( al, kPlus10 );
+
+    // kPlus11 = kStartingValue + 11
+    mov( kStartingValue, al );
+    add( 11, al );
+    mov( al, kPlus11 );
+
+    // kPlus12 = kStartingValue + 12
+    mov( kStartingValue, al );
+    add( 12, al );
+    mov( al, kPlus12 );
+
+    // kPlus13 = kStartingValue + 13
+    mov( kStartingValue, al );
+    add( 13, al );
+    mov( al, kPlus13 );
+
+    
+
+    stdout.put(kPlus1:2, " ", kStartingValue:2, " ", kStartingValue:2, " ", kStartingValue:2, " ", kPlus2:2, nl);
+    stdout.put(kStartingValue:2, " ", kPlus3:2, " ", kPlus4:2, " ", kPlus5:2, " ", kStartingValue:2, nl);
+    stdout.put(kStartingValue:2, " ", kPlus6:2, " ", kPlus7:2, " ", kPlus8:2, " ", kStartingValue:2, nl);
+    stdout.put(kStartingValue:2, " ", kPlus9:2, " ", kPlus10:2, " ", kPlus11:2, " ", kStartingValue:2, nl);
+    stdout.put(kPlus12:2, " ", kStartingValue:2, " ", kStartingValue:2, " ", kStartingValue:2, " ", kPlus13:2, nl);
+
+
+
+end zTable;

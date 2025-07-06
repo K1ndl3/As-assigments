@@ -1,0 +1,13 @@
+program sportTeam;
+#include ( "stdlib.hhf" );
+
+begin sportTeam;
+
+    stdout.put( "0         0       0    0  000000  00000     000", nl );
+    stdout.put( "0        0  0     0  0    0       0   0    00  00", nl );
+    stdout.put( "0       0    0    00      000000  0  0     00", nl );
+    stdout.put( "0      0zzzzzz0   0  0    0       0000       00", nl );
+    stdout.put( "0000  0        0  0    0  000000  0   0    000", nl );
+
+
+end sportTeam;
