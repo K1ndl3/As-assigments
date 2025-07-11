@@ -1,0 +1,59 @@
+program skipTable;
+#include ("stdlib.hhf");
+
+static
+    iVar: int8;
+
+
+begin skipTable;
+
+    // first row
+    stdout.put("Gimme a starting value: ");
+    stdin.get(iVar);
+    mov(iVar, AL);
+    stdout.puti8(AL);
+    stdout.put(": ");
+    rol(1,AL);      // doubling the val in reg
+    stdout.puti8(AL);
+    dec(AL);        // decrement by 1
+    stdout.put(" ");
+    stdout.puti8(AL);
+    stdout.put(" ");
+    rol(1,AL);      // double the mf again
+    stdout.puti8(AL);
+    stdout.newln();
+
+    // second row
+    mov(iVar, AL);
+    dec(AL);
+    stdout.puti8(AL);
+    stdout.put(": ");
+    rol(1,AL);
+    stdout.puti8(AL);
+    dec(AL);
+    stdout.put(" ");
+    stdout.puti8(AL);
+    stdout.put(" ");
+    rol(1,AL);
+    stdout.puti8(AL);
+    stdout.newln();
+
+
+    // third row
+    mov(iVar, AL);
+    dec(AL);
+    dec(AL);
+    stdout.puti8(AL);
+    stdout.put(": ");
+    rol(1,AL);
+    stdout.puti8(AL);
+    dec(AL);
+    stdout.put(" ");
+    stdout.puti8(AL);
+    stdout.put(" ");
+    rol(1,AL);
+    stdout.puti8(AL);
+    stdout.newln();
+    
+
+end skipTable;
