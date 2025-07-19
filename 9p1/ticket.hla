@@ -1,0 +1,131 @@
+program ticket;
+#include ("stdlib.hhf");
+
+static;
+    iVar: dword;
+
+    ///// how much of each row we have sold //////
+    r1Value: int8;
+    r2Value: int8;
+    r3Value: int8;
+    r4Value: int8;
+
+    totalSales : int32   := 0;
+
+begin ticket;
+
+
+/////////////////////// FIRST STEP: prompt and enter input//////////////////////////////////////////////
+
+    stdout.put("Enter sales (as hex R1R2R3R4): ");
+    stdin.get(iVar);
+    mov(iVar, EBX);
+
+////////////////////// FIRST STEP PART 1: doing some validating user input /////////////////////////////
+
+    cmp(EBX, 255);                                                             // basically check if the input is filled with all rows
+    jbe shift24;                                                               // if not filled then we will shift filled row to msb
+
+    cmp(EBX, 65535);
+    jbe shift16;
+
+    cmp (EBX, 16777215);
+    jbe shift8;
+
+    jmp noShift;
+
+    shift24:
+        shl(24, EBX);
+        jmp done;
+
+    shift16:
+        shl(16, EBX);
+        jmp done;
+    
+    shift8:
+        shl(8, EBX);
+        jmp done;
+
+    noShift:
+
+    done:
+
+
+////////////////////// SECOND STEP: extract the input from the register for parsing /////////////////////
+
+
+                                                                            // ROW 1 VALUES:
+    mov(EBX, EDX);                                                          // move original data to another spot so we can reuse
+    shr(24, EDX);                                                           // shift row 1 values to dl
+    mov(DL, r1Value);                                                       // store value of row 1
+
+                                                                            // ROW 2 VALUES:
+    mov(EBX, EDX);
+    shr(16, EDX);
+    mov(DL, r2Value);
+
+                                                                            // ROW 3 VALUES:
+    mov(EBX, EDX);
+    shr(8, EDX);
+    mov(DL, r3Value);
+
+                                                                            // ROW 4 VALUES:
+    mov(EBX, EDX);
+    mov(DL, r4Value);                                                       // no need to shr since row 4 is already in  DL
+
+////////////////////// THIRD STEP: loop thru the values to accumulate sales /////////////////////////////
+
+    mov(r1Value, AL);
+    beginRow1Loop:
+
+        cmp(AL, 0);                                                         // comparison/terminating condition for loop
+        je endRow1Loop;                                                     // where to go next
+    
+                                                                            // LOOP BODY
+        add(30, totalSales);                                                // add to our totalSales
+        dec(AL);                                                            // decrement our iteration variable
+        jmp beginRow1Loop;                                                  // jump back to beginning of loop
+
+    endRow1Loop:
+        mov(r2Value, AL);                                                   // prep the next counter variable
+        jmp beginRow2Loop;                                                  // jump straight into next loop
+
+
+    beginRow2Loop:
+
+        cmp(AL, 0);
+        je endRow2Loop;
+
+        add(20, totalSales);
+        dec(AL);
+        jmp beginRow2Loop;
+
+    endRow2Loop:
+        mov(r3Value, AL);
+        jmp beginRow3Loop;
+
+    beginRow3Loop:
+        cmp(AL, 0);
+        je endRow3Loop;
+
+        add(15, totalSales);
+        dec(AL);
+        jmp beginRow3Loop;
+
+    endRow3Loop:
+        mov(r4Value, AL);
+        jmp beginRow4Loop;
+
+    beginRow4Loop:
+        cmp(AL, 0);
+        je endRow4Loop;
+
+        add(10, totalSales);
+        dec(AL);
+        jmp beginRow4Loop;
+
+    endRow4Loop:
+        stdout.put("You have sold ", r1Value, " row1 tickets ", r2Value, " row2 tickets ", r3Value, " row3 tickets ", r4Value, " row4 tickets.", nl);
+        stdout.put("Your ticket sales total $", totalSales, nl);
+    
+end ticket;
