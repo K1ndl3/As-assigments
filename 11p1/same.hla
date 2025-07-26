@@ -1,0 +1,111 @@
+program same;
+#include ("stdlib.hhf");
+static;
+    iVarW: int8;
+    iVarX: int8;
+    iVarY: int8;
+    iVarZ: int8;
+
+////////////////////////////////////// Step 3: procedure signature and definition //////////////////////////////////////////
+procedure sameProc( w: int8; x : int8; y : int8; z : int8 ); @nodisplay; @noframe;
+static
+iVarReturnAddress: dword;    // return address
+iVarBoolVal: boolean;
+
+begin sameProc;
+pop(iVarReturnAddress);
+
+
+pop(BX);
+mov(BL,w);
+pop(BX);
+mov(BL,x);
+pop(BX);
+mov(BL,y);
+pop(BX);
+mov(BL,z);
+push(iVarReturnAddress);
+
+push(BX);
+push(CX);
+
+mov(w, CL);
+cmp(CL, x);
+je secondTest;
+jne retFalse;
+
+secondTest:
+mov(x, CL);
+cmp(CL, y);
+je thirdTest;
+jne retFalse;
+
+thirdTest:
+mov(y, CL);
+cmp(CL, z);
+je retTrue;
+jne retFalse;
+
+retTrue:
+    mov(true, AL);
+    jmp endSeq;
+
+retFalse:
+    mov(false, AL);
+    jmp endSeq;
+
+
+endSeq:
+pop(CX);
+pop(BX);
+ret();
+end sameProc;
+
+begin same;
+//////////////////////////////////////// Step 1: take user input and store them into variables ////////////////////////////
+    stdout.put("Feed me W:" );
+    stdin.get(iVarW);
+    stdout.put(nl);
+
+    stdout.put("Feed me X:" );
+    stdin.get(iVarX);
+    stdout.put(nl);
+
+
+    stdout.put("Feed me Y:" );
+    stdin.get(iVarY);
+    stdout.put(nl);
+
+    stdout.put("Feed me Z:" );
+    stdin.get(iVarZ);
+    stdout.put(nl);
+
+////////////////////////////////////// Step 2: push our variables/return address on to the stack ///////////////////////////
+    mov(0, BX);
+    mov(iVarZ, BL);
+    push(BX);
+    mov(0, BX);
+    mov(iVarY, BL);
+    push(BX);
+    mov(0, BX);
+    mov(iVarX, BL);
+    push(BX);
+    mov(0,BX);
+    mov(iVarW, BL);
+    push(BX);
+    call sameProc;
+
+    cmp(AL, 1);
+    je truthyValue;
+    jl falsyValue;
+
+truthyValue:
+    stdout.put("Same. AL = ", AL);
+    jmp done;
+
+falsyValue:
+    stdout.put("Not Same. AL = ", AL);
+    jmp done;
+
+done:
+end same;
