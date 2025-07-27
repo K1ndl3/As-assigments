@@ -1,0 +1,104 @@
+
+program midNum;
+#include ("stdlib.hhf");
+
+static;
+
+iVar: int32;
+iCounterForInput: int8 := 3;
+iVarMiddleVal: int16;
+
+//////////////////////////////////////////////////////////////////////////////////////
+///////// procedure
+///////////////////////////////////////////////////////////////////////////////////////
+
+procedure middlefinder( x: int16; y: int16; z: int16 ); @nodisplay; @noframe;
+static
+    iVarReturnAddress: dword;
+    iVarSum: int16 := 0;
+    iVarMax: int16;
+    iVarMin: int16;
+
+begin middlefinder;
+
+pop(iVarReturnAddress);
+pop(EBX);
+mov(BX,x);
+pop(EBX);
+mov(BX,y);
+pop(EBX);
+mov(BX,z);
+push(iVarReturnAddress);
+
+push(BX);
+
+/// calculate the sum total
+
+mov(x, BX);
+add(BX, iVarSum);
+mov(y, BX);
+add(BX, iVarSum);
+mov(z, BX);
+add(BX, iVarSum);
+
+//// find the max
+
+mov(x, BX);
+cmp(BX, y);
+jge FIRST_PASS;
+mov(y, BX);
+
+FIRST_PASS:
+    cmp(BX, z);
+    jge SECOND_PASS;
+    mov(z, BX);
+SECOND_PASS:
+mov(BX, iVarMax);
+
+//// find the min
+mov(x, BX);
+cmp(BX, y);
+jle FIRST_PASS_MIN;
+mov(y, BX);
+
+FIRST_PASS_MIN:
+    cmp(BX, z);
+    jle SECOND_PASS_MIN;
+    mov(z, BX);
+SECOND_PASS_MIN:
+mov(BX, iVarMin);
+
+mov(iVarMax, BX);
+sub(BX, iVarSum);
+mov(iVarMin, BX);
+sub(BX, iVarSum);
+mov(iVarSum, AX);
+
+pop(BX);
+ret();
+end middlefinder;
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+/////////////// main routine
+///////////////////////////////////////////////////////////////////////////////////////
+begin midNum;
+
+inputLoop:
+    cmp(iCounterForInput, 0);
+    je callProc;
+    stdout.put("Feed Me: ");
+    stdin.get(iVar);
+    mov(0, EBX);
+    mov(iVar, EBX);
+    push(EBX);
+    dec(iCounterForInput);
+    jmp inputLoop;
+
+callProc:
+call middlefinder;
+mov(AX, iVarMiddleVal);
+stdout.put("AX = ", iVarMiddleVal);
+end midNum;
+
+
