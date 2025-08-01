@@ -1,0 +1,37 @@
+program convert;
+#include ("stdlib.hhf");
+static;
+    iVar: real32;
+    iAnswer: real32;
+//////////////////////// step 2: enter proc //////////////////////////////
+procedure cToR(celcius: real32); @nodisplay; @noframe;
+static
+    pReturnAddress: dword;
+    pAnswer: real32;
+begin cToR;
+    pop(pReturnAddress);
+    pop(celcius);
+    push(pReturnAddress);
+
+/////////////////////// step 2.1: calculate conversion ///////////////////
+    finit();
+    fld(celcius);
+    fld(273.15);
+    faddp();
+    fld(1.8);
+    fmulp();
+    fstp(pAnswer);
+    mov(pAnswer, EAX);
+    ret();
+end cToR;
+
+begin convert;
+    //////////////////// step 1: take user input ///////////////////////////
+    stdout.put("What's your Celsius: ");
+    stdin.get(iVar);
+    push(iVar);
+    call cToR;
+    mov(EAX, iAnswer);
+    stdout.put("Here's you Rankine: ");
+    stdout.putr32(iAnswer, 8,3,' ');
+end convert;
