@@ -1,0 +1,107 @@
+program quad;
+#include ("stdlib.hhf");
+static;
+    iA: real32;
+    iB: real32;
+    iC: real32;
+
+    iRoot1: real32;
+    iRoot2: real32;
+
+procedure calcQuad(a: real32; b: real32; c: real32); @nodisplay; @noframe;
+static
+    pReturnAddress: dword;
+    p4AC: real32;
+    pBSqr: real32;
+    pDiscrim: real32;
+    pPRoot: real32;
+    pNRoot: real32;
+    pNegB: real32;
+
+begin calcQuad;
+    pop(pReturnAddress);
+    pop(a);
+    pop(b);
+    pop(c);
+    push(pReturnAddress);
+
+    finit();
+    // compute 1: 4ac
+    fld(4.0);
+    fld(a);
+    fmulp();
+    fld(c);
+    fmulp();
+    fstp(p4AC);
+    
+    // compute 2: b^2
+    fld(b);
+    fmul(b);
+    fstp(pBSqr);
+    
+    // compute 3: sqrt(b^2 - 4ac)
+    fld(pBSqr);
+    fld(p4AC);
+    fsubp();
+    fsqrt();
+    fstp(pDiscrim);
+
+    // compute 4: -b + Discrim
+    fld(b);
+    fld(-1.0);
+    fmulp();
+    fst(pNegB);
+    fld(pDiscrim);
+    faddp();
+    fstp(pPRoot);
+
+    // compute 5: (-b + Discrim)/2a
+    fld(2.0);
+    fld(a);
+    fmulp();
+    fld(pPRoot);
+    fxch();
+    fdivp();
+    fstp(pPRoot);
+
+    // compute 6: (-b - Discrim)/ 2a
+    fld(pNegB);
+    fld(pDiscrim);
+    fsubp;
+    fstp(pNRoot);
+    fld(2.0);
+    fld(a);
+    fmulp();
+    fld(pNRoot);
+    fxch();
+    fdivp();
+    fstp(pNRoot);
+
+
+    mov(pNRoot, EAX);
+    mov(pPRoot, EBX);
+
+    ret();
+end calcQuad;
+
+
+begin quad;
+    stdout.put("Gimme a value for a: ");
+    stdin.get(iA);
+    stdout.put("Gimme a value for b: ");
+    stdin.get(iB);
+    stdout.put("Gimme a value for c: ");
+    stdin.get(iC);
+
+    push(iC);
+    push(iB);
+    push(iA);
+    call calcQuad;
+    stdout.put("The solutions are x = ");
+    mov(EAX, iRoot1);
+    mov(EBX, iRoot2);
+    stdout.putr32(iRoot1, 6,2,' ');
+    stdout.put(" and x = ");
+    stdout.putr32(iRoot2, 6,2,' ');
+    stdout.put(nl);
+end quad;
