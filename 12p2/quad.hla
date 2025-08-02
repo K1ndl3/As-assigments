@@ -78,8 +78,8 @@ begin calcQuad;
     fstp(pNRoot);
 
 
-    mov(pNRoot, EAX);
-    mov(pPRoot, EBX);
+    mov(pNRoot, iRoot1);
+    mov(pPRoot, iRoot2);
 
     ret();
 end calcQuad;
@@ -98,8 +98,6 @@ begin quad;
     push(iA);
     call calcQuad;
     stdout.put("The solutions are x = ");
-    mov(EAX, iRoot1);
-    mov(EBX, iRoot2);
     stdout.putr32(iRoot1, 6,2,' ');
     stdout.put(" and x = ");
     stdout.putr32(iRoot2, 6,2,' ');
