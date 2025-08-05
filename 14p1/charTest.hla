@@ -84,10 +84,39 @@ begin reporter;
         stdout.put("myCharacter is a digit:      ", pCheckDigit, nl);
 
     ///////////////////////////// check #1: isAlpha(if there is at least one true in check #2-#4)
-        stdout.put("myCharacter is alphanumeric: ", pCheckAlphaNum, nl);
+        stdout.put("myCharacter is alphanumeric: ", pCheckAlphaNum, nl, nl);
 
+    //////////////////////////// "reporter reports: " output message ////////////////////////////
 
+        stdout.put("reporter reports: ");
+        cmp(pCheckLower, true);
+        je PRINT_CHECKLOWER;
+        jne CHECK_UPPER;
+    PRINT_CHECKLOWER:
+        stdout.put("isLower ");
 
+    CHECK_UPPER:
+        cmp(pCheckUpper, true);
+        je PRINT_CHECKUPPER;
+        jne CHECK_DIGIT;
+    PRINT_CHECKUPPER:
+        stdout.put("isUpper ");
+    
+    CHECK_DIGIT:
+        cmp(pCheckDigit, true);
+        je PRINT_CHECKDIGIT;
+        jne CHECK_ALPHANUM;
+    PRINT_CHECKDIGIT:
+        stdout.put("isDigit ");
+    
+    CHECK_ALPHANUM:
+        cmp(pCheckAlphaNum, true);
+        je PRINT_ALPHANUM;
+        jne DONE;
+    PRINT_ALPHANUM:
+        stdout.put("isAlphaNum ");
+    DONE:
+        stdout.newln();
 
     ret();
 end reporter;
