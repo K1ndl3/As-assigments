@@ -1,0 +1,107 @@
+program charTest;
+#include ("stdlib.hhf");
+static;
+    iChar: byte;
+    pCheckUpper: boolean;
+    pCheckLower: boolean;
+    pCheckDigit: boolean;
+    pCheckAlphaNum: boolean;
+
+procedure reporter( myCharacter : byte ); @nodisplay; @noframe;
+static
+    pReturnAddress: dword;
+begin reporter;
+    pop(pReturnAddress);
+    pop(BX);
+    push(pReturnAddress);
+    mov(BL, myCharacter);
+
+    ///////////////////////////////////////////////////////////////////////
+    //   TODO: We have 4 tests to check
+    //   1. isAlpha( alphanumeric chars pass, that is A-Z, a-z, 0-9)
+    //   2. isUpper( only UPPERCASE chars pass, that is A-Z )
+    //   3. isLower( only lowercase chars pass, that is a-z )
+    //   4. isDigit( only digits 0-9 pass)
+    //////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////
+    // APPROACH: using the boolean data type, we will declare three bools
+    //   that represents checks 2-4. If at least one out of three checks 
+    //   are true, then the check for 1. isAlpha has to be true. 
+    //////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////// check #2: isUpper (A-Z meaning its hex codes are: 41<=myCharacter<=5A) ////////////////////
+        cmp(myCharacter, $41);
+        jl CHECK_2_FALSE;
+        cmp(myCharacter, $5A);
+        jg CHECK_2_FALSE;
+        jle CHECK_2_TRUE;
+
+    CHECK_2_FALSE:
+        mov(false, pCheckUpper);
+        jmp FINISH_CHECK_2;
+    CHECK_2_TRUE:
+        mov(true, pCheckUpper);
+        mov(true, pCheckAlphaNum);
+        jmp FINISH_CHECK_2;
+
+    FINISH_CHECK_2:
+        stdout.put("myCharacter is uppercase:    ", pCheckUpper, nl);
+
+    ////////////////////////////// check #3: isLower(a-z meaning its hex codes are: 61<=myCharacter<=7A) ///////////////////
+        cmp(myCharacter, $61);
+        jl CHECK_3_FALSE;
+        cmp(myCharacter, $7A);
+        jg CHECK_3_FALSE;
+        jmp CHECK_3_TRUE;
+    CHECK_3_FALSE:
+        mov(false, pCheckLower);
+        jmp FINISH_CHECK_3;
+    CHECK_3_TRUE:
+        mov(true, pCheckLower);
+        mov(true, pCheckAlphaNum);
+        jmp FINISH_CHECK_3;
+    FINISH_CHECK_3:
+        stdout.put("myCharacter is lowercase:    ", pCheckLower, nl);
+    
+    ///////////////////////////// check #4: isDigit(0-9 meaning its hex codes are: 30<=myCharacter<=39) //////////////////
+        cmp(myCharacter, $30);
+        jl CHECK_4_FALSE;
+        cmp(myCharacter, $39);
+        jg CHECK_4_FALSE;
+        jmp CHECK_4_TRUE;
+
+    CHECK_4_FALSE:
+        mov(false, pCheckDigit);
+        jmp FINISH_CHECK_4;
+    
+    CHECK_4_TRUE:
+        mov(true, pCheckDigit);
+        mov(true, pCheckAlphaNum);
+        jmp FINISH_CHECK_4;
+    
+    FINISH_CHECK_4:
+        stdout.put("myCharacter is a digit:      ", pCheckDigit, nl);
+
+    ///////////////////////////// check #1: isAlpha(if there is at least one true in check #2-#4)
+        stdout.put("myCharacter is alphanumeric: ", pCheckAlphaNum, nl);
+
+
+
+
+    ret();
+end reporter;
+begin charTest;
+    stdout.put("Gimme data: ");
+    // flush the input buffer to use getc
+    stdin.flushInput();
+    stdin.getc();
+    stdout.newln();
+    // now the input is stored in AL
+    // now since the variable is a byte and we need to push onto the stack, we need to envelop the variable
+    mov(AL, iChar);
+    mov(0,BX);
+    mov(iChar, BL);
+    push(BX);
+    call reporter;
+end charTest;
