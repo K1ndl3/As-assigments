@@ -1,0 +1,66 @@
+program rollingAvg;
+#include ("stdlib.hhf");
+static;
+    iNumerator : real32;
+    iDataPoint : real32;
+    iDenominator : real32 := 0; 
+    iIncrement: real32 := 1;
+    iRollingAvg: real32;
+    iContinue : byte;
+begin rollingAvg;
+    finit();
+INPUT_LOOP:
+    cmp(iContinue, $6E); // if the user input is n then quit the loop
+    je endLoop;
+    // loop body
+    /////////////////////////////////////////////////////////////////////////
+    //  TODO: 1. prompt the user for data                                   //
+    //  TODO: 2. add the data to iNumerator                                 //
+    //  TODO: 3. increment the iDenominator                                 //
+    //  TODO: 4. display rolling avg                                        //
+    //  TODO: 5. take user input prompt to continue or quit                 //
+    //  TODO: 6. jump back to beginning of loop                             //
+    /////////////////////////////////////////////////////////////////////////
+    
+    // TODO1: prompt the user for data
+    stdout.put("Enter data point: ");
+    stdin.get(iDataPoint);
+
+
+    // TODO2: add the data to iNumerator
+    fld(iNumerator);
+    fadd(iDataPoint);
+    fstp(iNumerator);
+
+
+    // TODO3: increment the iDenominator
+    fld(iDenominator);
+    fadd(iIncrement);
+    fstp(iDenominator);
+
+
+    // TODO4: calculate and display the rolling average
+    fld(iNumerator);
+    fld(iDenominator);
+    fdivp();
+    fstp(iRollingAvg);
+    stdout.putr32(iRollingAvg, 8,3,' ');
+    stdout.newln();
+
+
+    // TODO5: take user input prompt and continue or quit
+    stdout.put("more data? ");
+    stdin.flushInput();
+    stdin.getc();
+    mov(AL, iContinue);
+
+
+    // TODO6: jump back to beginning of loop
+    jmp INPUT_LOOP;
+
+endLoop:
+    stdout.put("final rolling average = ");
+    stdout.putr32(iRollingAvg, 8,3,' ');
+    stdout.newln();
+
+end rollingAvg;
